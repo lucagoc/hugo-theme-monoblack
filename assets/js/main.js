@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initShortcutsModal();
   initHeroSearch();
   initFloatingToc();
+  initImageLightbox();
   initGlobalKeyboardShortcuts();
 
   console.log(
@@ -388,6 +389,13 @@ function initGlobalKeyboardShortcuts() {
 
     // Escape: Close active overlay
     if (e.key === 'Escape') {
+      const lightbox = document.getElementById('image-lightbox');
+      if (lightbox && lightbox.classList.contains('is-open')) {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        return;
+      }
       if (shortcutsModal && shortcutsModal.classList.contains('is-open')) {
         shortcutsModal.classList.remove('is-open');
         shortcutsModal.setAttribute('aria-hidden', 'true');
@@ -522,3 +530,99 @@ function initGlobalKeyboardShortcuts() {
     }
   });
 }
+
+/* --------------------------------------------------------------------------
+   6. Image Zoom Lightbox Overlay
+   -------------------------------------------------------------------------- */
+function initImageLightbox() {
+  const images = document.querySelectorAll('.zoomable-image, .markdown-content img:not(.zoomable-image)');
+  if (images.length === 0) return;
+
+  let lightbox = document.getElementById('image-lightbox');
+  if (!lightbox) {
+    lightbox = document.createElement('div');
+    lightbox.id = 'image-lightbox';
+    lightbox.className = 'image-lightbox';
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-label', 'Image preview');
+    lightbox.innerHTML = `
+      <button class="lightbox-close-btn" aria-label="Close image preview">esc [✕]</button>
+      <div class="lightbox-content">
+        <img class="lightbox-image" src="" alt="" />
+        <div class="lightbox-caption" style="display: none;"></div>
+      </div>
+    `;
+    document.body.appendChild(lightbox);
+  }
+
+  const lightboxImg = lightbox.querySelector('.lightbox-image');
+  const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+  const closeBtn = lightbox.querySelector('.lightbox-close-btn');
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  const openLightbox = (img) => {
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt || '';
+
+    // Extract caption if available
+    let captionText = '';
+    const figure = img.closest('figure');
+    if (figure) {
+      const figcaption = figure.querySelector('figcaption');
+      if (figcaption) {
+        captionText = figcaption.textContent.replace(/^\/\/\s*/, '').trim();
+      }
+    }
+    if (!captionText && img.getAttribute('title')) {
+      captionText = img.getAttribute('title').trim();
+    }
+    if (!captionText && img.getAttribute('alt')) {
+      captionText = img.getAttribute('alt').trim();
+    }
+
+    if (captionText) {
+      lightboxCaption.innerHTML = `<span class="caption-prefix">//</span> ${escapeHTML(captionText)}`;
+      lightboxCaption.style.display = 'block';
+    } else {
+      lightboxCaption.style.display = 'none';
+    }
+
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  images.forEach((img) => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(img);
+    });
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target !== lightboxCaption && !lightboxCaption.contains(e.target)) {
+      closeLightbox();
+    }
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
+  }
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, 
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
+}
+

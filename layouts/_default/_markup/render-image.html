@@ -1,0 +1,26 @@
+{{- $src := .Destination -}}
+{{- $alt := .Text -}}
+{{- $caption := .Title -}}
+<figure class="post-image-wrapper">
+  <div class="post-image-container">
+    <img 
+      src="{{ $src | safeURL }}" 
+      alt="{{ $alt }}" 
+      {{ with $caption }}title="{{ . }}"{{ end }}
+      loading="lazy" 
+      decoding="async" 
+      class="post-image zoomable-image"
+    />
+  </div>
+  {{ with $caption }}
+    <figcaption class="post-image-caption">
+      <span class="caption-prefix">//</span> {{ . }}
+    </figcaption>
+  {{ else }}
+    {{ with $alt }}
+      <figcaption class="post-image-caption">
+        <span class="caption-prefix">//</span> {{ . }}
+      </figcaption>
+    {{ end }}
+  {{ end }}
+</figure>
