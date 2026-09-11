@@ -1,0 +1,14 @@
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*~
+
+# Hugo artifacts (if tested locally)
+public/
+resources/_gen/
+.hugo_build.lock

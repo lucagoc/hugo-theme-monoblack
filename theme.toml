@@ -1,0 +1,9 @@
+name = "hugo-theme-monoblack"
+license = "MIT"
+description = "A pure black minimalist terminal theme for Hugo with glassmorphism accents, CLI search, and keyboard-first navigation"
+tags = ["terminal", "minimalist", "dark", "pure-black", "glassmorphism", "developer", "fast", "vim"]
+min_version = "0.110.0"
+
+[author]
+  name = "Lucas"
+  homepage = "https://example.org"

@@ -1,0 +1,74 @@
+{{ define "main" }}
+<div class="home-layout">
+  <!-- Centered Interactive Terminal Search Prompt -->
+  <div class="hero-prompt-container">
+    <div class="hero-prompt-line" id="hero-prompt-box" role="search">
+      <span class="cmd-prompt">{{ site.Params.terminalUser | default "blog" }}@{{ site.Params.terminalHost | default (urls.Parse site.BaseURL).Host | default "localhost" }}:~$</span>
+      
+      <!-- Default View: ls -l ./posts/ (without animated cursor) -->
+      <div class="cmd-view cmd-default-view" id="cmd-default-view">
+        <span class="cmd-text">ls -l ./posts/</span>
+      </div>
+
+      <!-- Search View: grep -i "query" (with animated cursor) -->
+      <div class="cmd-view cmd-search-view" id="cmd-search-view">
+        <span class="cmd-prefix">grep -i "</span>
+        <div class="search-input-wrapper">
+          <input 
+            type="text" 
+            id="search-input" 
+            class="terminal-search-input" 
+            placeholder="" 
+            autocomplete="off" 
+            autocapitalize="off" 
+            spellcheck="false" 
+            aria-label="Search posts"
+          />
+          <span class="input-size-mirror" id="input-size-mirror" aria-hidden="true"></span>
+          <span class="cursor-blink search-cursor" id="search-cursor">_</span>
+        </div>
+        <span class="cmd-suffix">"</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Posts List -->
+  <section class="posts-section">
+    {{ $posts := where site.RegularPages "Type" "in" (slice "posts" "post" "blog") }}
+    {{ if not $posts }}
+      {{ $posts = site.RegularPages }}
+    {{ end }}
+
+    <div class="posts-list-minimal" id="posts-list-container">
+      {{ range $posts }}
+        <article class="post-item-minimal" data-title="{{ .Title | lower }}" data-tags="{{ delimit (.Params.tags | default slice) " " | lower }}" data-summary="{{ .Summary | plainify | lower }}">
+          <span class="post-date-minimal">{{ .Date.Format "2006-01-02" }}</span>
+          <div class="post-info-minimal">
+            <h2 class="post-title-minimal">
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h2>
+            {{ with .Params.tags }}
+              <div class="post-tags-minimal">
+                {{ range . }}
+                  <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}" class="tag-minimal">#{{ . }}</a>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+          {{ if site.Params.showReadingTime }}
+            <span class="post-readtime-minimal">{{ .ReadingTime }}m</span>
+          {{ end }}
+        </article>
+      {{ else }}
+        <div class="empty-state">
+          <p class="cmd-prompt">~/posts$ No posts found.</p>
+        </div>
+      {{ end }}
+    </div>
+    
+    <div id="no-search-results" class="empty-state" style="display: none;">
+      <p class="cmd-prompt">~/posts$ grep: no matches found.</p>
+    </div>
+  </section>
+</div>
+{{ end }}

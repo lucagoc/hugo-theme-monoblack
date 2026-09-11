@@ -1,0 +1,53 @@
+{{ define "main" }}
+<div class="article-layout">
+  <article class="article-body">
+    <header class="article-header">
+      <div class="article-prompt-meta">
+        <span class="cmd-prompt">{{ site.Params.terminalUser | default "blog" }}@{{ site.Params.terminalHost | default (urls.Parse site.BaseURL).Host | default "localhost" }}:~$</span>
+        <span class="cmd-text">cat {{ with .File }}{{ .LogicalName }}{{ else }}post.md{{ end }}</span>
+      </div>
+
+      <h1 class="article-title">{{ .Title }}</h1>
+      
+      <div class="article-meta">
+        <time datetime="{{ .Date }}" class="meta-date">{{ .Date.Format "January 02, 2006" }}</time>
+        {{ if site.Params.showReadingTime }}
+          <span class="meta-sep">•</span>
+          <span class="meta-readtime">{{ .ReadingTime }} min read</span>
+        {{ end }}
+        {{ with .Params.tags }}
+          <span class="meta-sep">•</span>
+          <div class="article-tags-inline">
+            {{ range . }}
+              <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}" class="tag-minimal">#{{ . }}</a>
+            {{ end }}
+          </div>
+        {{ end }}
+      </div>
+    </header>
+
+    <div class="markdown-content">
+      {{ .Content }}
+    </div>
+
+    {{ partial "comments.html" . }}
+  </article>
+
+  <!-- Truly Floating Pure Minimalist Round Glass TOC Widget -->
+  {{ if and .TableOfContents (gt (len .TableOfContents) 30) }}
+    <div class="floating-toc-widget" id="floating-toc-widget">
+      <!-- Unfolded Pure Minimalist Glass Panel -->
+      <div class="floating-toc-panel" id="toc-panel" aria-hidden="true">
+        <div class="floating-toc-nav" id="toc-tree">
+          {{ .TableOfContents }}
+        </div>
+      </div>
+
+      <!-- Floating Round Glass Trigger Button showing Reading Percentage -->
+      <button class="floating-toc-trigger" id="toc-trigger" aria-label="Table of Contents" aria-expanded="false">
+        <span class="toc-progress-text" id="toc-progress-text">0%</span>
+      </button>
+    </div>
+  {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,47 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .Title }}{{ .Title }} | {{ end }}{{ site.Title }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+<meta name="author" content="{{ site.Params.author }}">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:title" content="{{ if .Title }}{{ .Title }} | {{ end }}{{ site.Title }}">
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<!-- CSS Stylesheet via Hugo Pipes -->
+{{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+<!-- Dynamic Accent Color Injection & Randomizer -->
+{{ $accentParam := site.Params.accentColor | default "random" }}
+{{ if and (ne $accentParam "random") (ne $accentParam "") }}
+<style>
+  :root {
+    --accent: {{ $accentParam }};
+    --accent-glow: {{ $accentParam }}40;
+    --accent-subtle: {{ $accentParam }}18;
+  }
+</style>
+{{ else }}
+<script>
+  (function() {
+    // Generate a truly random Hue (0-360) with 100% saturation and optimal luminosity for pure black OLED
+    var hue = Math.floor(Math.random() * 360);
+    var accent = 'hsl(' + hue + ', 100%, 58%)';
+    var accentGlow = 'hsla(' + hue + ', 100%, 58%, 0.25)';
+    var accentSubtle = 'hsla(' + hue + ', 100%, 58%, 0.12)';
+    
+    var root = document.documentElement;
+    root.style.setProperty('--accent', accent);
+    root.style.setProperty('--accent-glow', accentGlow);
+    root.style.setProperty('--accent-subtle', accentSubtle);
+  })();
+</script>
+{{ end }}

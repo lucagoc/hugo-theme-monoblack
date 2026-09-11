@@ -1,0 +1,29 @@
+{{ define "main" }}
+<div class="notfound-layout">
+  <div class="command-line">
+    <span class="cmd-prompt">{{ site.Params.terminalUser | default "blog" }}@{{ site.Params.terminalHost | default (urls.Parse site.BaseURL).Host | default "localhost" }}:~$</span>
+    <span class="cmd-text">curl -I <span id="notfound-url">{{ .Permalink }}</span></span>
+  </div>
+
+  <div class="error-output">
+    <p class="error-code text-accent">HTTP/1.1 404 Not Found</p>
+    <p class="error-msg">bash: route: target page does not exist in filesystem.</p>
+    
+    <div class="error-actions">
+      <p class="prompt-hint">Suggestions :</p>
+      <ul class="suggestion-list">
+        <li><a href="{{ site.Home.RelPermalink }}" class="nav-item active"><span class="nav-prefix">cd</span> ~/home</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const urlSpan = document.getElementById('notfound-url');
+    if (urlSpan && window.location && window.location.href) {
+      urlSpan.textContent = window.location.href;
+    }
+  })();
+</script>
+{{ end }}

@@ -1,0 +1,44 @@
+{{ define "main" }}
+<div class="list-layout">
+  <div class="list-container">
+    <div class="command-line">
+      <span class="cmd-prompt">{{ site.Params.terminalUser | default "blog" }}@{{ site.Params.terminalHost | default (urls.Parse site.BaseURL).Host | default "localhost" }}:~$</span>
+      <span class="cmd-text">find . -type f -name "*.md"</span>
+    </div>
+
+    <header class="list-header">
+      <h1 class="list-title"><span class="title-arrow">#</span> {{ .Title }}</h1>
+      {{ with .Description }}
+        <p class="list-desc">{{ . }}</p>
+      {{ end }}
+    </header>
+
+    <div class="posts-list-minimal">
+      {{ range .Pages }}
+        <article class="post-item-minimal">
+          <span class="post-date-minimal">{{ .Date.Format "2006-01-02" }}</span>
+          <div class="post-info-minimal">
+            <h2 class="post-title-minimal">
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h2>
+            {{ with .Params.tags }}
+              <div class="post-tags-minimal">
+                {{ range . }}
+                  <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}" class="tag-minimal">#{{ . }}</a>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+          {{ if site.Params.showReadingTime }}
+            <span class="post-readtime-minimal">{{ .ReadingTime }}m</span>
+          {{ end }}
+        </article>
+      {{ else }}
+        <div class="empty-state">
+          <p class="cmd-prompt">No entries found.</p>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

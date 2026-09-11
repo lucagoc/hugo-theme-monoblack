@@ -1,0 +1,17 @@
+{{- $posts := where site.RegularPages "Type" "in" (slice "posts" "post" "blog") -}}
+{{- if not $posts -}}
+  {{- $posts = site.RegularPages -}}
+{{- end -}}
+[
+  {{- range $index, $page := $posts -}}
+    {{- if $index }},{{ end }}
+    {
+      "title": {{ $page.Title | jsonify }},
+      "permalink": {{ $page.RelPermalink | jsonify }},
+      "date": {{ $page.Date.Format "2006-01-02" | jsonify }},
+      "summary": {{ $page.Summary | plainify | jsonify }},
+      "tags": {{ $page.Params.tags | default (slice) | jsonify }},
+      "readingTime": {{ $page.ReadingTime }}
+    }
+  {{- end -}}
+]

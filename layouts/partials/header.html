@@ -1,0 +1,9 @@
+<header class="glass-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="{{ site.Home.RelPermalink }}" class="terminal-brand">
+        <span class="brand-name">{{ site.Params.terminalUser | default "blog" }}@{{ site.Params.terminalHost | default (urls.Parse site.BaseURL).Host | default "localhost" }}</span>
+      </a>
+    </div>
+  </div>
+</header>

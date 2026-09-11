@@ -1,0 +1,7 @@
+<footer class="site-footer">
+  <div class="footer-container">
+    {{ if ne site.Params.footerText false }}
+      <span class="footer-kaomoji">{{ site.Params.footerText | default "ദ്ദി ᗜˬᗜ✧" | safeHTML }}</span>
+    {{ end }}
+  </div>
+</footer>
