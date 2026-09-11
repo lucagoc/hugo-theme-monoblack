@@ -1,9 +1,5 @@
 {{ if site.Params.giscus.enable }}
   <section class="comments-section" id="comments">
-    <div class="comments-header">
-      <span class="cmd-prompt">{{ site.Params.terminalUser | default "blog" }}@{{ site.Params.terminalHost | default (urls.Parse site.BaseURL).Host | default "localhost" }}:~$</span>
-      <span class="cmd-text">tail -f ./comments.log</span>
-    </div>
     <div class="giscus-container">
       <script src="https://giscus.app/client.js"
         data-repo="{{ site.Params.giscus.repo }}"

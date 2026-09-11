@@ -716,18 +716,7 @@ pre::-webkit-scrollbar-thumb {
    8. Comments Section (Giscus)
    -------------------------------------------------------------------------- */
 .comments-section {
-  margin-top: 3.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-glass);
-}
-
-.comments-header {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  margin-bottom: 1.5rem;
+  margin-top: 3rem;
 }
 
 .giscus-container {
