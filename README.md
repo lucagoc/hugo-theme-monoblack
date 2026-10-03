@@ -51,6 +51,8 @@ theme = 'monoblack'
   terminalHost = 'example.com'
   showReadingTime = true
   footerText = 'ദ്ദി ᗜˬᗜ✧' # Set to false to disable
+  favicon = 'favicon.png' # Optional
+  appleTouchIcon = 'apple-touch-icon.png' # Optional
 
   # Optional Giscus Comments
   [params.giscus]

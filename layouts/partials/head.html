@@ -10,6 +10,26 @@
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 
+<!-- Favicon -->
+{{ with site.Params.favicon }}
+<link rel="icon" href="{{ . | relURL }}">
+{{ else }}
+{{ if (fileExists "static/favicon.svg") }}
+<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+{{ else if (fileExists "static/favicon.png") }}
+<link rel="icon" type="image/png" href="{{ "favicon.png" | relURL }}">
+{{ else if (fileExists "static/favicon.ico") }}
+<link rel="icon" href="{{ "favicon.ico" | relURL }}">
+{{ end }}
+{{ end }}
+{{ with site.Params.appleTouchIcon }}
+<link rel="apple-touch-icon" href="{{ . | relURL }}">
+{{ else }}
+{{ if (fileExists "static/apple-touch-icon.png") }}
+<link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
+{{ end }}
+{{ end }}
+
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
