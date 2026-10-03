@@ -118,6 +118,30 @@ body.terminal-body {
   color: var(--text-main);
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.header-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: color 0.15s ease, transform 0.15s ease;
+  text-decoration: none;
+}
+
+.header-icon-link:hover {
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.header-icon {
+  display: block;
+}
+
 /* --------------------------------------------------------------------------
    4. Hero Terminal Prompt & Dynamic Search Morph
    -------------------------------------------------------------------------- */

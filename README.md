@@ -53,6 +53,8 @@ theme = 'monoblack'
   footerText = 'ദ്ദി ᗜˬᗜ✧' # Set to false to disable
   favicon = 'favicon.png' # Optional
   appleTouchIcon = 'apple-touch-icon.png' # Optional
+  github = 'https://github.com/username' # Optional header icon
+  kofi = 'https://ko-fi.com/username' # Optional header icon
 
   # Optional Giscus Comments
   [params.giscus]
