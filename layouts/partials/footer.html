@@ -1,7 +1,13 @@
 <footer class="site-footer">
   <div class="footer-container">
     {{ if ne site.Params.footerText false }}
-      <span class="footer-kaomoji">{{ site.Params.footerText | default "ദ്ദി ᗜˬᗜ✧" | safeHTML }}</span>
+      <span id="footer-kaomoji" class="footer-kaomoji" style="cursor: pointer;">{{ site.Params.footerText | default "ദ്ദി ᗜˬᗜ✧" | safeHTML }}</span>
     {{ end }}
   </div>
 </footer>
+<script>
+  document.getElementById('footer-kaomoji')?.addEventListener('click', () => {
+    const audio = new Audio('/easter_egg.opus');
+    audio.play().catch(error => console.error('Error playing audio:', error));
+  });
+</script>
