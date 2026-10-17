@@ -29,7 +29,7 @@
   --radius-md: 10px;
   --radius-lg: 14px;
   
-  --max-width: 760px;
+  --max-width: 1000px;
 }
 
 /* --------------------------------------------------------------------------
@@ -524,6 +524,8 @@ body.terminal-body {
   background: var(--bg-glass-heavy);
   box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7);
   transition: border-color 0.2s ease;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .post-image-container:hover {
@@ -533,12 +535,15 @@ body.terminal-body {
 .markdown-content img,
 .post-image {
   display: block;
-  width: 100%;
+  width: auto;
   max-width: 100%;
   height: auto;
+  max-height: 60vh;
+  object-fit: contain;
   border-radius: var(--radius-md);
   cursor: zoom-in;
   transition: opacity 0.2s ease;
+  margin: 0 auto;
 }
 
 .post-image-caption {
